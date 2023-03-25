@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -52,7 +53,12 @@ type searchResult struct{
 	ResultDesc string;
 }
 var userAgents = []string{
-
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+	"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Safari/604.1.38",
+	"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:56.0) Gecko/20100101 Firefox/56.0",
+	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Safari/604.1.38",
 }
 
 func randomUserAgent()string{
@@ -61,3 +67,48 @@ func randomUserAgent()string{
 func buildUrl()string{
 
 }
+
+func scrapeClientRequest(){
+
+}
+func bingResultParser(){
+
+}
+
+func bingScrape(searchTerm string,country string,pageCount int,count int,backoff int)([]searchResult,error){
+results:=[]searchResult{
+	bingpages,err:=buildUrl(searchTerm,country,pageCount,count)
+	if err!=nil{
+		return nil,err
+	}
+
+	for _,page:= range bingpages{
+		rank:=len(results)
+		res,err:=scrapeClientRequest(page)
+		if err!=nil{
+			return nil,err
+		}
+		data,err:=bingResultParser(res,rank)
+		if err!=nil{
+			return nil,err
+		}
+		for _,result:= range data{
+			results=append(results,result)
+		}
+		// Give delay between requests
+		time.Sleep(time.Duration(backoff)*time.second)
+	 }
+}
+}
+
+func main(){
+res,err:=bingScrape("Mayank Kumar", "com", 2, 30,30)
+if err==nil{
+	for _,res := range res{
+		fmt.Println(res)
+	}
+}else{
+	fmt.Println(err)
+}
+}
+ 
