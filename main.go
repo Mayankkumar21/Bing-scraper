@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"github.com/PuerkitoBio/goquery"
 )
 
 var bingDomains = map[string]string{
