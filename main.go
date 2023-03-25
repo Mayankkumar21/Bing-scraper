@@ -110,8 +110,37 @@ func scrapeClientRequest(searchURL string) (*http.Response, error) {
 	return res, nil
 
 }
-func bingResultParser() {
+func bingResultParser(response *http.Response, rank int) ([]searchResult, error) {
 
+	doc, err := goquery.NewDocumentFromResponse(response)
+	if err != nil {
+		return nil, err
+	}
+	results := []searchResult{}
+	sel := doc.Find("li.b_algo")
+	rank++
+
+	for i := range sel.Nodes {
+		item := sel.Eq(i)
+		linkTag := item.Find("a")
+		link, _ := linkTag.Attr("href")
+		titleTag := item.Find("h2")
+		descTag := item.Find("div.b_caption p")
+		desc := descTag.Text()
+		title := titleTag.Text()
+		link = strings.Trim(link, " ")
+		if link != "" && link != "#" && !strings.HasPrefix(link, "/") {
+			result := searchResult{
+				rank,
+				link,
+				title,
+				desc,
+			}
+			results = append(results, result)
+			rank++
+		}
+	}
+	return results, err
 }
 
 func bingScrape(searchTerm string, country string, pageCount int, count int, backoff int) ([]searchResult, error) {
@@ -135,7 +164,7 @@ func bingScrape(searchTerm string, country string, pageCount int, count int, bac
 			results = append(results, result)
 		}
 		// Give delay between requests
-		time.Sleep(time.Duration(backoff) * time.second)
+		time.Sleep(time.Duration(backoff) * time.Second)
 	}
 	return results, nil
 }
