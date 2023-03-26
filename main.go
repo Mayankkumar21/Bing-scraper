@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -172,10 +174,13 @@ func bingScrape(searchTerm string, country string, pageCount int, count int, bac
 }
 
 func main() {
+	file, _ := os.Create("output.txt")
+	log.SetOutput(file)
+	defer file.Close()
 	res, err := bingScrape("Mayank Kumar", "com", 2, 30, 30)
 	if err == nil {
 		for _, res := range res {
-			fmt.Println(res)
+			log.Println(res)
 		}
 	} else {
 		fmt.Println(err)
