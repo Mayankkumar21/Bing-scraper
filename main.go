@@ -99,7 +99,7 @@ func paramUpdate(number int, count int) int {
 }
 
 func scrapeClientRequest(searchURL string) (*http.Response, error) {
-	baseClient := http.Client{}
+	baseClient := http.Client{}	// creating a new http client everytime
 	req, _ := http.NewRequest("GET", searchURL, nil)
 	req.Header.Set("User-Agent", randomUserAgent())
 
