@@ -8,7 +8,6 @@ import (
 	"os"
 	"strings"
 	"time"
-
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -76,7 +75,7 @@ func randomUserAgent() string {
 func buildUrl(searchTerm string, country string, pageCount int, count int) ([]string, error) {
 	toScrape := []string{}
 	searchTerm = strings.Trim(searchTerm, " ")
-	searchTerm = strings.Replace(searchTerm, " ", "+", -1) //-1 ->no limit to replacements
+	searchTerm = strings.Replace(searchTerm, " ", "+", -1) //-1 -> no limit to replacements(replace all)
 
 	if countryCode, found := bingDomains[country]; found { //map finds key
 		for i := 0; i < pageCount; i++ {
@@ -114,7 +113,7 @@ func scrapeClientRequest(searchURL string) (*http.Response, error) {
 	return res, nil
 
 }
-func bingResultParser(response *http.Response, rank int) ([]searchResult, error) {
+func bingResultParser(response *http.Response, rank int) ([]searchResult, error) {	//return a struct
 
 	doc, err := goquery.NewDocumentFromResponse(response)
 	if err != nil {
