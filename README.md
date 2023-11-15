@@ -15,6 +15,9 @@
 6. Install go `sudo apt-get install golang`
 ### To run this project on your local ->
 * Ensure you have Go 1.19 or better
+```bash
+go --version
+```
 * Clone this repo into a project folder
 ```bash
 $ git clone https://github.com/Mayankkumar21/Bing-scraper.git
